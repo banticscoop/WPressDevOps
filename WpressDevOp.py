@@ -97,7 +97,7 @@ def reparar_permisos_wp(nombre_dominio):
             os.chmod(comando, S_IRUSR | S_IWUSR | S_IXUSR | S_IROTH | S_IWOTH | S_IXOTH )
             ruta = os.path.join(users_home_dir, dom_in_use.usuario, "web", dom_in_use.nombre, "public_html")
             print("*-* Se corre reparaPermisosWP: ", comando + " " + ruta + dom_in_use.usuario)
-            subprocess.run([comando, ruta + dom_in_use.usuario])
+            subprocess.run([comando, ruta, dom_in_use.usuario])
             # subprocess.run(["/bin/bash", "-x " + comando + " " + ruta + dom_in_use.usuario])
     if not dominio_encontrado:
         print("**** No se encontro ", nombre_dominio, "en este servidor ****")
@@ -110,7 +110,8 @@ def repara_todos_permisos_wp():
             webs = os.path.join(users_home_dir, usuario, "web")
             for dominio in os.listdir(webs):
                 if os.path.exists((os.path.join(webs, dominio, 'public_html', 'wp-config.php'))):
-                    reparar_permisos_wp(dominio)
+                    # reparar_permisos_wp(dominio)
+                    print("correria para ", dominio)
         except Exception as e:
             print(" Error --> " + str(e))
 
