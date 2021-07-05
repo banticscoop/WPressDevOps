@@ -58,20 +58,17 @@ def crea_regla_disable(Lines, path_htaccess):
             f.write('Order Deny,Allow\n')
             f.write('Deny from all\n')
             f.write('</Files>\n')
-            f.write('#### Fin de Bantics BLoqueo Wordpres xmlrpc ####\n')
+            f.write('#### Fin de Bantics Bloqueo Wordpres xmlrpc ####\n')
             f.close()
 
 def disable_xmlrpc_via_htaccess():
-    print("Lista Dominios del servidor ")
-    #     lista de domininios /home/p1078fac/web/facttic.org.ar/public_html/
+    print("Se corre deshabilitacion para todos los sites de WordPress ")
     for usuario in os.listdir(users_home_dir):
         print("Usuario: " + usuario)
         try:
-            wordpress = ""
             webs = os.path.join(users_home_dir, usuario, "web")
             for dominio in os.listdir(webs):
                 if os.path.exists((os.path.join(webs, dominio, 'public_html', 'wp-config.php'))):
-                    wordpress = " ** Con Wordpress ** "
                     path_htaccess = os.path.join(webs, dominio, 'public_html', '.htaccess')
                     if not os.path.exists((path_htaccess)):
                         crea_regla_disable([], path_htaccess)
@@ -106,15 +103,32 @@ def reparar_permisos_wp(nombre_dominio):
         print("**** No se encontro ", nombre_dominio, "en este servidor ****")
 
 
-def Main():
+def repara_todos_permisos_wp():
+    for usuario in os.listdir(users_home_dir):
+        print("Usuario: " + usuario)
+        try:
+            webs = os.path.join(users_home_dir, usuario, "web")
+            for dominio in os.listdir(webs):
+                if os.path.exists((os.path.join(webs, dominio, 'public_html', 'wp-config.php'))):
+                    reparar_permisos_wp(dominio)
+        except Exception as e:
+            print(" Error --> " + str(e))
+
+
+def opciones():
     print("Wordpress Bantics DevOps strageThings :D\n")
-    print("1) Lista de dominios en el servidor\n")
+    print("1) Lista de dominios en el servidor")
     print("2) Poner .htacces disable a los dominios wpress que no lo tengan")
     print("3) Reparar Permisos de un dominio wordpress")
-    # print("4) Reparar Permisos de todos dominios wordpress de todos los usuarixs")
+    print("4) Reparar Permisos de todos dominios wordpress de todos los usuarixs")
     print("q) Salir\n")
     i = input("Elegi una Opcion \n")
+    return i
 
+
+def Main():
+    i = ''
+    i= opciones()
     while i not in ['q']:
         if i == '1':
             lista_dominios()
@@ -126,8 +140,11 @@ def Main():
             input_dominio = input("Ingresa el nombre de dominio:\n")
             reparar_permisos_wp(input_dominio)
             # reparar_permisos_wp(lista_dominio)
+        if i == '4':
+            repara_todos_permisos_wp()
 
-        i = input("Elegi una Opcion \n")
+
+        i = opciones()
 
 
 if __name__ == "__main__":
