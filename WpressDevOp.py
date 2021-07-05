@@ -90,13 +90,14 @@ def reparar_permisos_wp(nombre_dominio):
     dominios = lista_dominios(imprime=False)
     dominio_encontrado = False
     for dom_in_use in dominios:
-        if nombre_dominio in dom_in_use.nombre:
+        ruta = os.path.join(users_home_dir, dom_in_use.usuario, "web", dom_in_use.nombre, "public_html")
+        if (nombre_dominio in dom_in_use.nombre) and (os.path.exists(os.path.join(ruta, 'wp-config.php'))):
             dominio_encontrado=True
             print("Dominio verificado")
             comando = this_path + "/reparaPermisosWP.sh"
             os.chmod(comando, S_IRUSR | S_IWUSR | S_IXUSR | S_IROTH | S_IWOTH | S_IXOTH )
-            ruta = os.path.join(users_home_dir, dom_in_use.usuario, "web", dom_in_use.nombre, "public_html")
-            print("*-* Se corre reparaPermisosWP: ", comando + " " + ruta + dom_in_use.usuario)
+
+            print("*-* Se corre reparaPermisosWP: ", comando + " " + ruta + " " + dom_in_use.usuario)
             subprocess.run([comando, ruta, dom_in_use.usuario])
             # subprocess.run(["/bin/bash", "-x " + comando + " " + ruta + dom_in_use.usuario])
     if not dominio_encontrado:
@@ -110,7 +111,7 @@ def repara_todos_permisos_wp():
             webs = os.path.join(users_home_dir, usuario, "web")
             for dominio in os.listdir(webs):
                 if os.path.exists(os.path.join(webs, dominio, 'public_html', 'wp-config.php')):
-                    print("Corre reparacion permisos para ", os.path.join(webs, dominio, 'public_html', 'wp-config.php'))
+                    print("Corre reparacion permisos para", os.path.join(webs, dominio, 'public_html', 'wp-config.php'))
                     reparar_permisos_wp(dominio)
 
         except Exception as e:
