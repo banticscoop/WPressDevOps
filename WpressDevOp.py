@@ -109,7 +109,8 @@ def repara_todos_permisos_wp():
         try:
             webs = os.path.join(users_home_dir, usuario, "web")
             for dominio in os.listdir(webs):
-                if os.path.exists((os.path.join(webs, dominio, 'public_html', 'wp-config.php'))):
+                if os.path.exists(os.path.join(webs, dominio, 'public_html', 'wp-config.php')):
+                    print("Corre reparacion permisos para ", os.path.join(webs, dominio, 'public_html', 'wp-config.php'))
                     reparar_permisos_wp(dominio)
 
         except Exception as e:
