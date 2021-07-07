@@ -53,12 +53,12 @@ def crea_regla_disable(Lines, path_htaccess):
         print("No tiene la linea")
         with open(path_htaccess, "a+") as f:
             f.write(' \n')
-            f.write('#### Bantics Bloqueo Wordpres xmlrpc ####\n')
+            f.write('##### Bantics Bloqueo Wordpres xmlrpc #####\n')
             f.write('<Files xmlrpc.php>\n')
-            f.write('Order Deny,Allow\n')
-            f.write('Deny from all\n')
+            f.write('order deny,allow\n')
+            f.write('deny from all\n')
             f.write('</Files>\n')
-            f.write('#### Fin de Bantics Bloqueo Wordpres xmlrpc ####\n')
+            f.write('##### Fin de Bantics Bloqueo Wordpres xmlrpc #####\n')
             f.close()
 
 def disable_xmlrpc_via_htaccess():
